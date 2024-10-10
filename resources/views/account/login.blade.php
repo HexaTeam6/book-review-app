@@ -19,18 +19,25 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="profile.html">
+                        <form action="{{ route('account.authenticate') }}" method="POST">
+                            @csrf
                             <div class="row gy-3 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                                        <input type="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="name@example.com">
                                         <label for="email" class="form-label">Email</label>
+                                        @error('email')
+                                            <p class="invalid-feedback">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password">
+                                        <input type="password" value="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="" placeholder="Password">
                                         <label for="password" class="form-label">Password</label>
+                                        @error('password')
+                                            <p class="invalid-feedback">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
