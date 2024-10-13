@@ -10,8 +10,15 @@ use Intervention\Image\ImageManager;
 
 class BookController extends Controller
 {
-    public function index() {
-        return view('books.list');
+    public function index(Request $request) {
+        $books = Book::orderBy('created_at', 'DESC');
+        if (!empty($request->keyword)) {
+            $books->where('title', 'like', '%'.$request->keyword.'%');
+        }
+        $books = $books->paginate(2);
+        return view('books.list', [
+            'books' => $books
+        ]);
     }
 
     public function create() {
