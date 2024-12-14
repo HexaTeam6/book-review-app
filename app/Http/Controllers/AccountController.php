@@ -124,8 +124,34 @@ class AccountController extends Controller
         }
         $reviews = $reviews->paginate(10);
 
-        return view('account.my-reviews', [
+        return view('account.my-reviews.list', [
             'reviews' => $reviews
         ]);
+    }
+
+    public function editReview($id) {
+        $review = Review::findOrFail($id);
+        return view('account.my-reviews.edit', [
+            'review' => $review
+        ]);
+    }
+
+    public function updateReview($id, Request $request) {
+        $review = Review::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'review' => 'required|min:10',
+            'rating' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return redirect()->route('account.myReviews.editReview', $id)->withInput()->withErrors($validator);
+        }
+
+        $review->review = $request->review;
+        $review->rating = $request->rating;
+        $review->save();
+
+        session()->flash('success', 'Review update successfully.');
+        return redirect()->route('account.myReviews');
     }
 }

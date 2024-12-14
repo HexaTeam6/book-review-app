@@ -48,7 +48,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('account.reviews.edit', $review->id) }}" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i>
+                                            <a href="{{ route('account.myReviews.editReview', $review->id) }}" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <a href="#" onclick="didDeleteReviewButtonTapped({{ $review->id }})" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
                                         </td>
