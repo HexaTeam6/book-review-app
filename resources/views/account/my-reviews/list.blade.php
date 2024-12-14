@@ -66,22 +66,22 @@
 </div>
 @endsection
 
-{{-- @section('script')
+@section('script')
 <script>
     function didDeleteReviewButtonTapped(id) {
         if(confirm("Are you sure want to delete?")) {
             $.ajax({
-                url: '{{ route("account.reviews.deleteReview") }}',
+                url: '{{ route("account.myReviews.deleteReview") }}',
                 data: {id:id},
                 type: 'post',
                 headers: {
                     'X-CSRF-TOKEN' : '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    window.location.href = '{{ route("account.reviews") }}';
+                    window.location.href = '{{ route("account.myReviews") }}';
                 }
             });
         }
     }
 </script>
-@endsection --}}
+@endsection
