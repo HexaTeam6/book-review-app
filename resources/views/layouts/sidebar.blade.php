@@ -22,24 +22,24 @@
         <ul class="nav flex-column">
             @if (Auth::user()->role == 'admin')
             <li class="nav-item">
-                <a href="{{ route('books.index') }}">Books</a>                               
+                <a href="book-listing.html">Books</a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('account.reviews') }}">Reviews</a>                               
+                <a href="reviews.html">Reviews</a>
             </li>
             @endif
             <li class="nav-item">
-                <a href="profile.html">Profile</a>                               
+                <a href="profile">Profile</a>
             </li>
             <li class="nav-item">
                 <a href="my-reviews.html">My Reviews</a>
             </li>
             <li class="nav-item">
                 <a href="change-password.html">Change Password</a>
-            </li> 
+            </li>
             <li class="nav-item">
                 <a href="{{ route('account.logout') }}">Logout</a>
-            </li>                           
+            </li>
         </ul>
     </div>
 </div>

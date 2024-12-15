@@ -13,6 +13,11 @@
                     Profile
                 </div>
                 <div class="card-body">
+                    <div class="text-center mb-3">
+                        @if (Auth::user()->image != "")
+                        <img src="{{ asset('uploads/profile/thumb/'.Auth::user()->image) }}" class="img-fluid mt-4" alt="Luna John">
+                    @endif
+                    </div>
                     <form action="{{ route('account.updateProfile') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
@@ -24,7 +29,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Email</label>
-                            <input type="text" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email"  name="email" id="email"/>
+                            <input type="text" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" id="email"/>
                             @error('email')
                                 <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
@@ -35,13 +40,9 @@
                             @error('image')
                                 <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
-
-                            @if (Auth::user()->image != "")
-                                <img src="{{ asset('uploads/profile/thumb/'.Auth::user()->image) }}" class="img-fluid mt-4" alt="Luna John"> 
-                            @endif 
-                        </div>   
+                        </div>
                         <button class="btn btn-primary mt-2">Update</button>
-                    </form>                     
+                    </form>                  
                 </div>
             </div>                
         </div>
