@@ -76,23 +76,24 @@
 @endsection
 @section('script')
 <script>
-    function didTapDeleteButton(id) {
-        if(confirm('Are you sure want to delete this book?')) {
-            $.ajax({
-                url: `/account/books/${id}`, // Dynamic route with ID
-                type: 'DELETE', // Use the correct HTTP method
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    alert(response.message || 'Book deleted successfully!');
-                    window.location.href = '{{ route("books.index") }}'; // Redirect back to the index
-                },
-                error: function(xhr) {
-                    alert(xhr.responseJSON?.message || 'An error occurred while deleting the book.');
-                }
-            });
-        }
+function didTapDeleteButton(id) {
+    if(confirm('Are you sure want to delete this book?')) {
+        $.ajax({
+            url: '/account/books/' + id,  // Correct URL with ID
+            type: 'DELETE',               // Correct HTTP method
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                alert(response.message || 'Book deleted successfully!');
+                window.location.href = '{{ route("books.index") }}'; // Redirect back to the index
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON?.message || 'An error occurred while deleting the book.');
+            }
+        });
     }
+}
+
 </script>
 @endsection

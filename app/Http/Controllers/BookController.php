@@ -123,8 +123,8 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', 'Book Updated Successfully');
     }
 
-    public function destroy(Request $request) {
-        $book = Book::find($request->id);
+    public function destroy($id) {
+        $book = Book::find($id);  // Fetch the book using the ID
         if ($book == null) {
             session()->flash('error', 'Book not found.');
             return response()->json([
@@ -143,4 +143,5 @@ class BookController extends Controller
             ]);
         }
     }
+    
 }
