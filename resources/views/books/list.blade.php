@@ -77,18 +77,21 @@
 @section('script')
 <script>
     function didTapDeleteButton(id) {
-        if(confirm('Are you sure want to delete?')) {
+        if(confirm('Are you sure want to delete this book?')) {
             $.ajax({
-                url: '{{ route("books.destroy") }}',
-                type: 'delete',
-                data: { id:id },
+                url: `/account/books/${id}`, // Dynamic route with ID
+                type: 'DELETE', // Use the correct HTTP method
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    window.location.href = '{{ route("books.index") }}'
+                    alert(response.message || 'Book deleted successfully!');
+                    window.location.href = '{{ route("books.index") }}'; // Redirect back to the index
+                },
+                error: function(xhr) {
+                    alert(xhr.responseJSON?.message || 'An error occurred while deleting the book.');
                 }
-            })
+            });
         }
     }
 </script>
