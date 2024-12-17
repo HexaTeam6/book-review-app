@@ -14,13 +14,14 @@
                 <div class="card-body"> 
                     <form action="{{ route('account.reviews.updateReview', $review->id) }}" method="POST">
                         @csrf
+                        @method('POST')
                         <div class="mb-3">
                             <label for="review" class="form-label">Review</label>
                             <textarea name="review" id="review" class="form-control" disabled>{{ old('review', $review->review) }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" >
+                            <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
                                 <option value="1" {{ ($review->status == 1) ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ ($review->status == 0) ? 'selected' : '' }}>Block</option>
                             </select>
