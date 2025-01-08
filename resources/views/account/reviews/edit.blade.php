@@ -17,7 +17,7 @@
                         @method('POST')
                         <div class="mb-3">
                             <label for="review" class="form-label">Review</label>
-                            <textarea name="review" id="review" class="form-control" disabled>{{ old('review', $review->review) }}</textarea>
+                            <textarea name="review" id="review" class="form-control">{{ old('review', $review->review) }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>

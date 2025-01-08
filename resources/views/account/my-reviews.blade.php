@@ -66,7 +66,7 @@
 </div>
 @endsection
 
-{{-- @section('script')
+@section('script')
 <script>
     function didDeleteReviewButtonTapped(id) {
         if(confirm("Are you sure want to delete?")) {
@@ -84,4 +84,4 @@
         }
     }
 </script>
-@endsection --}}
+@endsection

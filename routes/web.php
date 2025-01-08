@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PasswordController;
 
 // Home routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -40,5 +41,10 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('reviews/{id}', [ReviewController::class, 'edit'])->name('account.reviews.edit');
         Route::post('reviews/{id}', [ReviewController::class, 'updateReview'])->name('account.reviews.updateReview');
         Route::post('delete-reviews', [ReviewController::class, 'deleteReview'])->name('account.reviews.deleteReview');
+        Route::get('/my-reviews', [ReviewController::class, 'myReviews'])->name('account.myReviews');
+        
+        // Change password
+        Route::get('change-password', [PasswordController::class, 'showChangePasswordForm'])->name('change.password');
+        Route::post('change-password', [PasswordController::class, 'changePassword'])->name('change.password.update');
     });
 });

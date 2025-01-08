@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class ReviewController extends Controller
 {
@@ -14,59 +16,73 @@ class ReviewController extends Controller
     public function index(Request $request)
     {
         $reviews = Review::with('book', 'user')->orderBy('created_at', 'DESC');
+        if (!empty($request->keyword)) {
+            $reviews = $reviews->where('review', 'like', '%'.$request->keyword.'%');
+        }
+        $reviews = $reviews->paginate(10);
+        
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return view('account.reviews.list', [
+                'reviews' => $reviews
+            ]);view('account.reviews.list');
+        }
 
-        // Filter by keyword
+        return redirect()->route('account.myReviews');
+    }
+
+    public function myReviews(Request $request) {
+        $userId = auth()->id();
+    
+        $reviews = Review::with('book')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'DESC');
+    
         if (!empty($request->keyword)) {
             $reviews = $reviews->where('review', 'like', '%' . $request->keyword . '%');
         }
-
+    
         $reviews = $reviews->paginate(10);
-
-        return view('account.reviews.list', [
+    
+        return view('account.my-reviews', [
             'reviews' => $reviews
         ]);
     }
+    
 
     /**
      * Show the form for editing a specific review.
      */
-    public function edit($id)
-    {
-        $review = Review::findOrFail($id);
-
+    public function edit($id) {
+        $review = Review::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+    
         return view('account.reviews.edit', [
-            'review' => $review
+            'review' => $review,
         ]);
     }
 
     /**
      * Update the specified review in the database.
      */
-    public function updateReview($id, Request $request)
-    {
-        $review = Review::findOrFail($id);
+public function updateReview($id, Request $request) {
+    $review = Review::findOrFail($id);
+    $validator = Validator::make($request->all(), [
+        'status' => 'required'
+    ]);
 
-        // Validation
-        $validator = Validator::make($request->all(), [
-            'status' => 'required|in:0,1', // Ensure status is either 0 or 1
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('account.reviews.edit', $id)
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        // Update review status
-        $review->status = $request->status;
-        $review->save();
-
-        // Flash success message
-        session()->flash('success', 'Review updated successfully.');
-
-        return redirect()->route('account.reviews');
+    if ($validator->fails()) {
+        return redirect()->route('account.reviews.edit', $id)->withInput()->withErrors($validator);
     }
+
+    $review->review = $request->review;
+    $review->status = $request->status;
+    $review->save();
+
+
+    session()->flash('success', 'Review updated successfully.');
+    return redirect()->route('account.myReviews');
+}
 
     public function deleteReview(Request $request) {
         $review = Review::find($request->id);
