@@ -28,21 +28,24 @@ Route::group(['prefix' => 'account'], function () {
         Route::post('update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::get('logout', [AccountController::class, 'logout'])->name('account.logout');
 
-        // Book management routes
-        Route::get('books', [BookController::class, 'index'])->name('books.index');
-        Route::get('books/create', [BookController::class, 'create'])->name('books.create');
-        Route::post('books', [BookController::class, 'store'])->name('books.store');
-        Route::get('books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
-        Route::post('books/{book}', [BookController::class, 'update'])->name('books.update');
-        Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+        Route::group(['middleware' => 'check-admin'], function() {
+                  // Book management routes
+                Route::get('books', [BookController::class, 'index'])->name('books.index');
+                Route::get('books/create', [BookController::class, 'create'])->name('books.create');
+                Route::post('books', [BookController::class, 'store'])->name('books.store');
+                Route::get('books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+                Route::post('books/{book}', [BookController::class, 'update'])->name('books.update');
+                Route::delete('books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
-        // Review management routes
-        Route::get('reviews', [ReviewController::class, 'index'])->name('account.reviews');
-        Route::get('reviews/{id}', [ReviewController::class, 'edit'])->name('account.reviews.edit');
-        Route::post('reviews/{id}', [ReviewController::class, 'updateReview'])->name('account.reviews.updateReview');
-        Route::post('delete-reviews', [ReviewController::class, 'deleteReview'])->name('account.reviews.deleteReview');
-        Route::get('/my-reviews', [ReviewController::class, 'myReviews'])->name('account.myReviews');
+                // Review management routes
+                Route::get('reviews', [ReviewController::class, 'index'])->name('account.reviews');
+                Route::get('reviews/{id}', [ReviewController::class, 'edit'])->name('account.reviews.edit');
+                Route::post('reviews/{id}', [ReviewController::class, 'updateReview'])->name('account.reviews.updateReview');
+                Route::post('delete-reviews', [ReviewController::class, 'deleteReview'])->name('account.reviews.deleteReview');
+        });
         
+        Route::get('my-reviews', [ReviewController::class, 'myReviews'])->name('account.myReviews');  
+
         // Change password
         Route::get('change-password', [PasswordController::class, 'showChangePasswordForm'])->name('change.password');
         Route::post('change-password', [PasswordController::class, 'changePassword'])->name('change.password.update');
