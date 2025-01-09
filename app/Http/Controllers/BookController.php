@@ -13,7 +13,10 @@ use Intervention\Image\ImageManager;
 class BookController extends Controller
 {
     public function index(Request $request) {
-        $books = Book::orderBy('created_at', 'DESC');
+        $books = Book::withCount('reviews')
+        ->withSum('reviews', 'rating')
+        ->orderBy('created_at', 'DESC');
+        
         if (!empty($request->keyword)) {
             $books->where('title', 'like', '%'.$request->keyword.'%');
         }
